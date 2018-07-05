@@ -2,6 +2,7 @@ package com.company;
 
 import java.awt.*;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Main {
 
@@ -11,17 +12,16 @@ public class Main {
         System.out.println("Main executed");
 
         Robot robot = new Robot();
-        Random random = new Random();
-        int x = 0;
-        int y = 0;
-        Point curPosition = MouseInfo.getPointerInfo().getLocation();
+        int curX = 0, curY = 0, prevX, prevY;
         for(;;)
         {
-            robot.delay(60000);
-            if((int)curPosition.getX() != x || (int)curPosition.getY() != y) {
-                x = random.nextInt() % 640;
-                y = random.nextInt() % 480;
-                robot.mouseMove(x, y);
+            prevX = curX;
+            prevY = curY;
+            curX = (int)MouseInfo.getPointerInfo().getLocation().getX();
+            curY = (int)MouseInfo.getPointerInfo().getLocation().getY();
+            robot.delay(15000);
+            if(curX == prevX && curY == prevY) {
+                robot.mouseMove(ThreadLocalRandom.current().nextInt(0, 641), ThreadLocalRandom.current().nextInt(0, 481));
             }
         }
     }
